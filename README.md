@@ -6,5 +6,7 @@ REQUIREMENTS
 o Apache HTTP servero PHP 5.2(tested on 5.5.9)
 
 o Apache mod_rewrite enabled  (as .htacess is involved you need to specify it in your site definition)
+
 o Facebook APIs
+
 o Composer
