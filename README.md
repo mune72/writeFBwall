@@ -14,3 +14,4 @@ o app authorized by Facebook for you site
 .. privacy policy available to read (for FB authorization)
   
 .. final FB user's comment HAVE to be inserted while posting
+
