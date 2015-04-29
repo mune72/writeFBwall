@@ -1,4 +1,4 @@
-A Mailing list manager to post on user's Facebook wall based on easymynewsletter and FB's apis.
+A Mailing list manager to post on user's Facebook wall based on MailChimp and FB's APIs.
 
 --------------------------------------
 REQUIREMENTS
