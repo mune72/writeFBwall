@@ -1,79 +1,69 @@
+<?php
+// Must pass session data for the library to work (only if not already included in your app).
+session_start();
+?>
+
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <title>Home | M5S Veneto prova FB</title>
-             
+  <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Oswald">
+  <style>
+    body {
+      font-family: 'Oswald', serif;
+      font-size: 14px;
+    }
+  </style>
+  <!-- un CSS -->      
 </head><!--/head-->
+<?php
 
-<body class="homepage">
+require 'prefs.php';
 
-<script>
-  
-  alert('preInizio');
-      
-  (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "//connect.facebook.net/it_IT/sdk/debug.js";
-     //js.src = "//connect.facebook.net/it_IT/sdk.js";
-     fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
-  
-  window.fbAsyncInit = function() {
-    FB.init({
-      appId      : 'XXX',
-      xfbml      : true,
-      version    : 'v2.3'
-    });
-  }
-  
-  alert('inizio');
-  
-  FB.login(function(response) {
-      if (response.authResponse) {
-        var access_token = FB.getAuthResponse()['accessToken'];
-        FB.api('/me/photos?access_token='+access_token, 'post',
-               { url: imgs/img_JB_prova.jpg, access_token: access_token },
-               function(response) {
-                if (!response || response.error) {
-                    alert('Error occured: ' + JSON.stringify(response.error));
-                } else {
-                    alert('Post ID: ' + response);
-                }
-               }
-        )
-      } else {
-          console.log('User cancelled login or did not fully authorize.');
-      }
-    },
-    { scope: 'publish_actions', return_scopes: true }
-  );
- 
-print ('Fine');
+// Define the root directoy.
+define( 'ROOT', dirname( __FILE__ ) . '/' );
 
-  //(function(d, s, id){
-  //   var js, fjs = d.getElementsByTagName(s)[0];
-  //   if (d.getElementById(id)) {return;}
-  //   js = d.createElement(s); js.id = id;
-  //   js.src = "//connect.facebook.net/it_IT/sdk/debug.js";
-  //   //js.src = "//connect.facebook.net/it_IT/sdk.js";
-  //   fjs.parentNode.insertBefore(js, fjs);
-  // }(document, 'script', 'facebook-jssdk'));
-  
-  //To Post on Friends Page: Enter the facebook user Id of friends in place of "/me" .
-  //"/"+friends_user_id+"/photos" ....
-</script>
+// Autoload the required files
+require_once( ROOT . 'vendor/autoload.php' );
 
-<!--<div
-  class="fb-like"
-  data-share="true"
-  data-width="450"
-  data-show-faces="true">
-</div>-->
-<!--
-<a onclick="publishOnFB('page title', 'page caption', 'default message'); return false;">Share on Facebook</a>
--->
-</body>
-</html>
+use Facebook\FacebookSession;
+use Facebook\FacebookRedirectLoginHelper;
+use Facebook\FacebookRequest;
+use Facebook\FacebookResponse;
+use Facebook\FacebookSDKException;
+use Facebook\FacebookRequestException;
+use Facebook\FacebookAuthorizationException;
+use Facebook\GraphObject;
+
+//Initialize the Facebook SDK.
+FacebookSession::setDefaultApplication($app_id, $app_secret);
+
+$helper = new FacebookRedirectLoginHelper($redirect_url);
+
+$loginUrl = $helper->getLoginUrl($scope); 
+
+//var_dump($_SESSION);
+
+?>
+<body>
+  <?php if ($_SESSION['FBLOGGED']!=true) : ?>
+    <P>
+      <H2>Newsletter</H2>
+      Attivista sottoscrivi aiuta bla bla bla Facebook bla bla bla  propaganda
+      bla bla bla riceverai bla bla bla 
+    </P>
+    <P>
+      <form name="frm">
+        <input type="checkbox" name="accept_privacy">&nbsp;<font
+        size=-2>&nbsp;<a href="privacy.html" target="new_wnd">privacy</a></font>
+        <a href="<?php echo $loginUrl; ?>" onclick="if (document.frm.accept_privacy.checked!=true) {alert ('Devi accettare le regole per il trattamento dei dati'); return false; } else return true; ">Login with Facebook</a>
+      </form>
+    </P>
+    <BR>
+    <P>
+      <img src="imgs/img_invito.png" align="center">
+    </P>
+  <?php endif; ?>
+
+</body></html>
