@@ -18,15 +18,12 @@
 </head><!--/head-->
 
 <body class="homepage">
-  
-  <p id="response">
-    <?php require_once('inc/store-address.php'); if($_GET['submit']){ echo (storeAddress()),"eseguito store"; } ?> 
-  </p>
+<?php if ($_SESSION['MCDONE']!=true) : ?>
   <p id="description">
    Mailing List Regionali 2015  M5S.
-   <form id="signup" action="<?php $_SERVER['PHP_SELF']; ?>" method="get">
+   <form id="signup" action="mc_store-address.php" method="post">
     <fieldset>
-      <legend>Completa l'iscrizione alla Mailing List</legend>
+      <legend>Completa l'iscrizione alla Mailing List: correggi i dati di Facebook</legend>
       <table>
         <tr>
           <td align="right">     
@@ -54,11 +51,11 @@
         </tr>
         <tr>
           <td colspan=2>
-            <input type="hidden" name="gender" value="male">
-            <input type="hidden" name="idfb" value="<?php if (isset($_SESSION['FBID']) && $_SESSION['FBID']!=null ) echo $_SESSION['FBID'] ?>">
+            <input type="hidden" name="gender" value="<?php if (isset($_SESSION['GENDER']) && $_SESSION['GENDER']!=null ) echo $_SESSION['GENDER']; else echo "male"; ?>">
+            <input type="hidden" name="fbid" value="<?php if (isset($_SESSION['FBID']) && $_SESSION['FBID']!=null ) echo $_SESSION['FBID'] ?>">
             <input type="hidden" name="regtime" value="<?php echo date('d/m/y H:i:s') ?>">
           
-            <input type="image" src="i/join.jpg" name="submit" value="Join" class="btn" alt="Join" />
+            <input type="image" src="img/join.jpg" name="submit" value="Join" class="btn" alt="Join" />
           </td>
         </tr>
         <tr>
@@ -68,10 +65,13 @@
     </fieldset>
    </form>
   </p>    
-
-  <!-- Some fancy Ajax stuff to store the sign up info. If you don't want to use it, just delete it and the form will still work -->
-  <script type="text/javascript" src="js/prototype.js"></script>
-  <script type="text/javascript" src="js/mailing-list.js"></script>
+  <?php else : ?>
+    <?php if ($_SESSION['MCOK']!=true) : ?>
+      <p>
+        Il gestore della mailing list dà un errore
+      </p>
+    <?php endif; ?>
+  <?php endif; ?>
 <?php
   die();
   
@@ -120,6 +120,7 @@
         echo $db->lastErrorMsg();
       } else {
         $st = "<H1>Grazie</H1> ".$_SESSION['ALL_FB']['first_name']." ".$_SESSION['ALL_FB']['last_name']." riceverai le mail per condividere le immagini all'indirizzo ".$_SESSION['ALL_FB']['email'];
+        $st .= "<br>Controlla la tua email per la conferma dell'iscrizione.";
         echo $st;
       } // insert riuscito
     } // utente non già presente

@@ -41,13 +41,18 @@ if ( isset( $session ) ) {
   $graphObject = $response->getGraphObject();
   $fbid = $graphObject->getProperty('id');              // To Get Facebook ID
   $fbfullname = $graphObject->getProperty('name'); // To Get Facebook full name
+  $fbfname = $graphObject->getProperty('first_name'); // To Get Facebook first name
+  $fblname = $graphObject->getProperty('last_name'); // To Get Facebook last name
   $femail = $graphObject->getProperty('email');    // To Get Facebook email ID
   /* ---- Session Variables -----*/
   $_SESSION['FBID'] = $fbid;           
   $_SESSION['FULLNAME'] = $fbfullname;
+  $_SESSION['FNAME'] = $fbfname;
+  $_SESSION['LNAME'] = $fblname;
   $_SESSION['EMAIL'] =  $femail;
   $_SESSION['FBLOGGED']= true;
   //checkuser($fuid,$ffname,$femail);
+  
   header("Location: done.php");
 } else {
   //$loginUrl = $helper->getLoginUrl();

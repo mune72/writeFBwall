@@ -64,6 +64,10 @@ $loginUrl = $helper->getLoginUrl($scope);
     <P>
       <img src="imgs/img_invito.png" align="center">
     </P>
+  <?php else : ?>
+    <p>
+      Già loggato in questa app
+    </p>
   <?php endif; ?>
 
 </body></html>

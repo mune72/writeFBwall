@@ -20,11 +20,6 @@ session_start();
 <body>
 <?php if (isset($_SESSION['failed']) && $_SESSION['failed'] == true) : ?>
   Accesso tramite Facebook fallito: <a href="index.php">riprova</a>
-  <?php
-  var_dump($_SESSION);
-  if (isset($_SESSION['ex']) )
-      echo "<BR>".$_SESSION['ex'];
-  ?>
 <?php endif; ?>
 
 </body>
