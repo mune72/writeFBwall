@@ -13,21 +13,75 @@
       font-size: 14px;
     }
   </style>
+  <link type="text/css" rel="stylesheet" href="css/default.css" />
   <!-- un CSS -->      
 </head><!--/head-->
 
 <body class="homepage">
   
-<P>
-  <H1>Done!</h1>
+  <p id="response">
+    <?php require_once('inc/store-address.php'); if($_GET['submit']){ echo (storeAddress()),"eseguito store"; } ?> 
+  </p>
+  <p id="description">
+   Mailing List Regionali 2015  M5S.
+   <form id="signup" action="<?php $_SERVER['PHP_SELF']; ?>" method="get">
+    <fieldset>
+      <legend>Completa l'iscrizione alla Mailing List</legend>
+      <table>
+        <tr>
+          <td align="right">     
+            <label for="fname" id="fname-label">Nome</label>
+          </td>
+          <td>
+            <input type="text" name="fname" id="fname" value="<?php if (isset($_SESSION['FNAME']) && $_SESSION['FNAME']!=null ) echo $_SESSION['FNAME'] ?>" >
+          </td>
+        </tr>
+        <tr>
+          <td align="right">     
+            <label for="lname" id="lname-label">Cognome</label>
+          </td>
+          <td>
+            <input type="text" name="lname" id="lname"  value="<?php if (isset($_SESSION['LNAME']) && $_SESSION['LNAME']!=null ) echo $_SESSION['LNAME'] ?>" >
+          </td>
+        </tr>
+        <tr>
+          <td align="right">
+            <label for="email" id="email-label">Indirizzo email</label>
+          </td>
+          <td>
+            <input type="text" name="email" id="email"  value="<?php if (isset($_SESSION['EMAIL']) && $_SESSION['EMAIL']!=null ) echo $_SESSION['EMAIL'] ?>" >
+          </td>
+        </tr>
+        <tr>
+          <td colspan=2>
+            <input type="hidden" name="gender" value="male">
+            <input type="hidden" name="idfb" value="<?php if (isset($_SESSION['FBID']) && $_SESSION['FBID']!=null ) echo $_SESSION['FBID'] ?>">
+            <input type="hidden" name="regtime" value="<?php echo date('d/m/y H:i:s') ?>">
+          
+            <input type="image" src="i/join.jpg" name="submit" value="Join" class="btn" alt="Join" />
+          </td>
+        </tr>
+        <tr>
+          <td colspan=2> Non manderemo pubblicità o daremo ad altri il tuo indirizzo</td>
+        </tr>
+      </table>
+    </fieldset>
+   </form>
+  </p>    
+
+  <!-- Some fancy Ajax stuff to store the sign up info. If you don't want to use it, just delete it and the form will still work -->
+  <script type="text/javascript" src="js/prototype.js"></script>
+  <script type="text/javascript" src="js/mailing-list.js"></script>
 <?php
-die();
-  $xmlfile = "emnl/application/data/clients.xml";
+  die();
   
+  
+  //var_dump($_SESSION);
+    
   class MyDB extends SQLite3
   {
     function __construct() {
-       $this->open('emnl/application/data/mldb.sqlite');
+       $this->open('mldb.sqlite'); // writabile to www-data but not to be served by the http server
     }
   }
   $db = new MyDB();
@@ -36,10 +90,8 @@ die();
   } else {
     //echo "Opened database successfully\n";
   }
-   
-  //var_dump($_SESSION);
 
-  if (isset($_SESSION["FB"]) && $_SESSION["FB"]==true ) {      
+  if (isset($_SESSION["FBLOGGED"]) && $_SESSION["FBLOGGED"]==true ) {      
     // controllo se è già nel DB
     $nRows=0;
     $sql = "SELECT COUNT(*) as count FROM USERS WHERE idFB='".$_SESSION['ALL_FB']['id']."';";
@@ -67,23 +119,12 @@ die();
       if(!$ret){
         echo $db->lastErrorMsg();
       } else {
-        $sxe = simplexml_load_file($xmlfile) or die("Error: Cannot create object");
-
-        //var_dump($sxe);
-        $ClientsNode = $sxe[0];
-
-        $client = $ClientsNode->addChild('client');
-        $client->addChild('name', $_SESSION['ALL_FB']['first_name']." ".$_SESSION['ALL_FB']['last_name']);
-        $client->addChild('email', $_SESSION['ALL_FB']['email']);
-        $client->addChild('id', $_SESSION['ALL_FB']['id']);
-        $sxe->asXML($xmlfile);
-        
         $st = "<H1>Grazie</H1> ".$_SESSION['ALL_FB']['first_name']." ".$_SESSION['ALL_FB']['last_name']." riceverai le mail per condividere le immagini all'indirizzo ".$_SESSION['ALL_FB']['email'];
         echo $st;
       } // insert riuscito
     } // utente non già presente
   } // sessione ok
-    else {
+  else {
     echo "Registrazione <font color=red>NON</font> effettuata: torna all'<a href='index.php'>inizio</a>";
 }
 $db->close();   
