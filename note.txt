@@ -22,4 +22,13 @@ http://www.benmarshall.me/facebook-sdk-php-v4/
 
 --------------------------------
 
-La gestione della mailing-list è fatta con mailchimp  usando le sue API
+La gestione della mailing-list è fatta con mailchimp usando le sue API
+
+-------------------------------------
+
+Con
+php export_list.php 
+si ottiene un output in formato csv del tipo:
+nome,cognome,ind_mail,idfb,genere,ora di registrazione, latitudine, longitudine
+ATTENZIONE: non lasciaree il file csv dove possa essere servito dal server http
+
