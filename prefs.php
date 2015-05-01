@@ -7,4 +7,8 @@ $scope        = array(
   'scope' => 'public_profile, email'
 );
 
+//Mailchimp codes
+$mcAPIkey = 'mcAPIkey-us10';
+$mclistID = "listID";
+
 ?>
