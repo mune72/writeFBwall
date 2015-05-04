@@ -4,7 +4,7 @@ session_start();
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
   <meta charset="utf-8">
   <title>Home | M5S Veneto prova FB</title>

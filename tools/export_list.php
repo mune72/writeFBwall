@@ -5,7 +5,7 @@
 // FM
 // This php snippet prints a csv output of the list in mailchimp
 
-require 'prefs.php';
+require '../prefs.php';
 $chunk_size = 4096; //in bytes
 
 $url = 'https://us10.api.mailchimp.com/export/1.0/list?apikey='.$mcAPIkey.'&id='.$mclistID;

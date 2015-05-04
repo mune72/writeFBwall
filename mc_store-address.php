@@ -18,14 +18,18 @@ require_once 'inc/MCAPI.class.php';
 function storeAddress(){
   require 'prefs.php';
   
+  $_SESSION['MCMSG']='';
+  $_SESSION['MCOK']=false;
+  
   // Validation
   if(!$_POST['email']){
     $_SESSION['MCOK']=false;
-    echo "<BR>"."No email address provided"; } 
+    $_SESSION['MCMSG']="No email address provided";
+  } 
   
   if(!preg_match("/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*$/i", $_POST['email'])) {
     $_SESSION['MCOK']=false;
-    echo "<BR>"."Email address is invalid"; 
+    $_SESSION['MCMSG']="Email address is invalid"; 
   }
   
   // grab an API Key from http://admin.mailchimp.com/account/api/
@@ -43,19 +47,23 @@ function storeAddress(){
             'LNAME'=>$_POST['lname'],
             'ID'=>$_POST['fbid'],
             'REGTIME'=>$_POST['regtime'],
-            'GENDER'=>$_POST['gender']);
+            'GENDER'=>$_POST['gender'],
+            'mc_language'=>'it');
   
   if($api->listSubscribe($list_id, $_POST['email'], $mergeVars) === true) {
     // It worked!  
-    echo "<BR>".'Successo! Controlla la tua email per la conferma dell\'iscrizione.';
+    $_SESSION['MCMSG']='Successo! Controlla la tua email per la conferma dell\'iscrizione.';
     $_SESSION['MCOK']=true;
   }else{
     // An error ocurred, echo "<BR>".error message  
-    echo "<BR>".'Error: ' . $api->errorMessage;
+    $_SESSION['MCMSG']='Error: ' . $api->errorMessage;
     $_SESSION['MCOK']=false;
   }
 }  
 $_SESSION['MCDONE']=true;
 
 storeAddress();
+
+header("Location: done.php");
+
 ?>
